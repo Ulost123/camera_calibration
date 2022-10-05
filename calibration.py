@@ -13,7 +13,7 @@ objp[:,:2] = np.mgrid[0:10,0:7].T.reshape(-1,2)
 objpoints = [] # 3d point in real world space
 imgpoints = [] # 2d points in image plane.
 
-images = glob.glob('C:/Users/PC/OneDrive/desktop/YUJIN/2022-2/Convergence/Calibration/check/*.jpg')
+images = glob.glob('/*.jpg')
 
 for fname in images:    
     img = cv.imread(fname)
@@ -38,15 +38,15 @@ ret, mtx, dist, rvecs, tvecs = cv.calibrateCamera(objpoints, imgpoints, gray.sha
 
 print('ret : ', ret, '\nmtx : ', mtx, '\ndist : ', dist, '\nrvecs : ', rvecs, '\ntvecs : ', tvecs)
 
-img_2 = cv.imread('C:/Users/PC/OneDrive/desktop/YUJIN/2022-2/Convergence/Calibration/img/cat.jpg')
+img_2 = cv.imread('cat.jpg')
 img_2 = cv.resize(img_2, (512, 512))
-cv.imwrite('C:/Users/PC/OneDrive/desktop/YUJIN/2022-2/Convergence/Calibration/img/cat_512.jpg', img_2)
-h, w = img.shape[:2]
+
+cv.imwrite('cat_512.jpg', img_2)
+
+h, w = img_2.shape[:2]
 
 new_cam_mat, roi = cv.getOptimalNewCameraMatrix(mtx, dist, (w, h), 1)
 
-dst = cv.undistort(img_2, mtx, dist)
 dst2 = cv.undistort(img_2, mtx, dist, None, new_cam_mat)
 
-cv.imwrite('C:/Users/PC/OneDrive/desktop/YUJIN/2022-2/Convergence/Calibration/img/test_cat.jpg', dst)
-cv.imwrite('C:/Users/PC/OneDrive/desktop/YUJIN/2022-2/Convergence/Calibration/img/test_cat2.jpg', dst2)
+cv.imwrite('undistortion_cat2.jpg', dst2)
